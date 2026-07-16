@@ -1,0 +1,101 @@
+/* src/pages/Home/Home.module.css */
+
+.homeContainer {
+  /* Ensure content starts below the fixed header (Header height is 80px) */
+  padding-top: 80px;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding-left: 20px;
+  padding-right: 20px;
+}
+
+/* Modern Hero Section - Side by side layout */
+.heroSection {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 50px 0;
+  gap: 40px;
+}
+
+.heroText {
+  flex: 1;
+}
+
+.title {
+  font-size: 3rem;
+  margin-bottom: 10px;
+}
+
+.heroImageContainer {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* RESPONSIVE CSS PLACEHOLDER BOX */
+.imagePlaceholder {
+  /* Set width using relative viewport units so it shrinks on smaller screens */
+  width: 25vw; 
+  height: 25vw;
+  
+  /* Constraints to keep it from getting comically large or too small */
+  max-width: 260px;
+  max-height: 260px;
+  min-width: 180px;
+  min-height: 180px;
+  
+  /* Aspect ratio rule guarantees it stays a flawless 1:1 square box */
+  aspect-ratio: 1 / 1; 
+  
+  /* Style matching your grey and white color palette */
+  background-color: var(--light-grey);
+  border: 3px dashed #ccc; /* Dashed border explicitly indicates a placeholder */
+  border-radius: 50%; /* Replicates the circular profile framing */
+  
+  /* Center the placeholder text inside the box */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: var(--text-grey);
+  font-weight: 500;
+  font-size: 0.9rem;
+  
+  /* Smooth scale transition for page load */
+  transition: all var(--transition-speed) ease;
+}
+
+.connectSection, .techSection {
+  padding: 50px 0;
+}
+
+/* Reusable grid for mapping cards */
+.cardGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); /* Modern grid */
+  gap: 20px;
+  margin-top: 20px;
+}
+
+/* Page-specific styles to complement the reusable Card */
+.connectCard {
+  text-align: center;
+  padding: 30px;
+}
+
+.icon {
+  font-size: 2rem;
+  margin-bottom: 10px;
+  color: var(--primary-pink); /* Default icon color pink */
+}
+
+/* Ensure icon becomes white when card is hovered (parent selector) */
+.connectCard:hover .icon {
+  color: var(--white);
+}
+
+.techCard {
+  text-align: center;
+  font-weight: bold;
+}

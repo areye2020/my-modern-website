@@ -1,0 +1,70 @@
+/* src/pages/Journey/Journey.module.css */
+
+.journeyContainer {
+  padding-top: 100px;
+  max-width: 900px;
+  margin: 0 auto;
+  padding-bottom: 50px;
+}
+
+.pageTitle {
+  text-align: center;
+  margin-bottom: 10px;
+}
+
+.pageSubtitle {
+  text-align: center;
+  color: var(--text-grey);
+  margin-bottom: 50px;
+}
+
+.journeyList {
+  display: flex;
+  flex-direction: column; /* Timeline layout */
+  gap: 30px;
+}
+
+/* Journey-specific style inside the reusable Card wrapper */
+.journeyCard {
+  position: relative;
+  /* Add typical timeline dot element (pure CSS) */
+}
+
+/* Creating a pure CSS timeline dot that aligns to the card */
+.journeyCard::before {
+  content: '';
+  position: absolute;
+  left: -25px; /* Position dot in the margin */
+  top: 25px;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background-color: var(--primary-pink);
+  box-shadow: 0 0 5px rgba(255,105,180,0.5);
+}
+
+.cardHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.cardTitle {
+  margin: 0;
+  font-size: 1.5rem;
+}
+
+.cardDate {
+  font-weight: bold;
+  color: var(--primary-pink);
+}
+
+/* Ensure the date text becomes white when card is hovered */
+.journeyCard:hover .cardDate {
+  color: var(--white);
+}
+
+.cardDescription {
+  line-height: 1.6;
+}

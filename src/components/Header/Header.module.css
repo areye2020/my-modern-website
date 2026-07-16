@@ -1,0 +1,98 @@
+/* src/components/Header/Header.module.css */
+
+.header {
+  position: fixed; /* Keeps the navbar pinned to the top of the screen */
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 80px; 
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  
+  /* FIXED: Changed from a rigid 50px padding to a fluid percentage base.
+     Using 5% padding dynamically shrinks the empty space on smaller screens 
+     so links don't get shoved off the edge. */
+  padding: 0 5%; 
+  
+  /* CRITICAL: Ensures the padding is calculated INSIDE the 100% width, 
+     preventing the header container itself from expanding beyond the screen width. */
+  box-sizing: border-box; 
+  
+  background-color: transparent; 
+  transition: background-color var(--transition-speed), box-shadow var(--transition-speed);
+  z-index: 1000; 
+}
+
+/* Styles applied when the user scrolls down the page */
+.headerScrolled {
+  background-color: var(--light-grey); 
+  box-shadow: 0 2px 5px rgba(0,0,0,0.05); 
+}
+
+.logo {
+  font-size: 1.5rem;
+  font-weight: bold;
+  text-decoration: none;
+  color: var(--text-grey);
+  transition: color var(--transition-speed);
+}
+
+.logo:hover {
+  color: var(--primary-pink);
+}
+
+.navbar {
+  display: flex;
+  
+  /* FIXED: Reduced from 30px to 20px to save horizontal space, 
+     making sure everything easily fits standard modern laptop displays. */
+  gap: 20px; 
+  
+  align-items: center;
+}
+
+.navLink {
+  font-size: 1rem;
+  text-decoration: none;
+  color: var(--text-grey); 
+  font-weight: 500;
+  transition: color var(--transition-speed);
+  
+  /* Prevent link text from awkwardly wrapping into two lines */
+  white-space: nowrap; 
+}
+
+.navLink.active {
+  color: var(--primary-pink); 
+}
+
+.navLink:hover:not(.active) {
+  color: var(--primary-pink);
+}
+
+
+/* ==========================================
+   RESPONSIVE LAYOUT ADDITION (MEDIA QUERY)
+   ========================================== 
+   This rule acts like a safety valve. If a user's browser window or device screen
+   is narrower than 768px (like a tablet or small mobile view), these tighter 
+   spacing rules automatically kick in so nothing overflows or cuts off.
+*/
+@media (max-width: 768px) {
+  .header {
+    /* Shrink the side paddings even further on tiny screens */
+    padding: 0 20px; 
+    height: 70px; /* Slightly shorter height on mobile to save vertical space */
+  }
+
+  .navbar {
+    /* Tighten the gaps between links so Home, Journey, Resume, and Contact all fit */
+    gap: 12px; 
+  }
+
+  .navLink {
+    /* Slightly decrease text scale so text blocks are compact */
+    font-size: 0.9rem; 
+  }
+}

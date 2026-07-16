@@ -1,0 +1,36 @@
+/* src/components/Card/Card.module.css */
+
+.card {
+  /* Layout: provide basic padding for the content inside */
+  padding: 20px;
+  box-sizing: border-box;
+
+  /* Look and feel: Original grey style initially */
+  background-color: var(--white);
+  color: var(--text-grey);
+  border-radius: 12px; /* Standard rounded corners as requested */
+  box-shadow: 0 4px 6px rgba(0,0,0,0.05); /* Modern slight shadow */
+
+  /* Performance/modern efficiency: Ensure smooth transitions for effects */
+  transition: all var(--transition-speed) ease;
+  cursor: pointer;
+  border: 2px solid transparent; /* Prevents layout shift on hover if adding border */
+}
+
+/* Hover effects as requested: pink background, white text, lift up */
+.card:hover {
+  background-color: var(--primary-pink); /* Pink bg */
+  color: var(--white); /* White text */
+  box-shadow: 0 10px 15px rgba(255, 105, 180, 0.2); /* Highlight shadow */
+
+  /* 'Lift up' animation by transforming the Y position */
+  transform: translateY(-8px);
+}
+
+/* Ensure any headings/text inside the card adjust on hover */
+.card:hover h1,
+.card:hover h2,
+.card:hover h3,
+.card:hover p {
+  color: var(--white);
+}
