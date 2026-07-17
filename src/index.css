@@ -3,24 +3,24 @@
 /*
   Global CSS Variables for the project's color scheme.
   So they can be referenced in any CSS file using var(--variable-name).
-*/
+  Warm Earthy Color Sceme 
+  */
 :root {
-  --primary-pink: #ff014f;  /* Match the original pink accent */
-  --bg-grey: #ecf0f3;       /* light grey background for pages*/
-  --light-grey: #f4f4f4;    /* Light grey background for the header on scroll */
-  --text-grey: #555;        /* Standard grey for body text */
-  --white: #ffffff;
+  --primary-pink: #C86D51; /* Deep Terracotta accent replacing #ff014f */
+  --bg-grey: #FBF7F4;      /* Soft cream/sand page background */
+  --light-grey: #EAE3DE;   /* Muted sand line color for timelines/inputs */
+  --text-grey: #4A4543;    /* Professional muted brown-gray text */
+  --white: #FFFFFF;        /* Pure white cards that stand out cleanly on sand */
   --transition-speed: 0.3s;
 }
 
-/* Base styles to replicate original look */
 body {
   margin: 0;
   font-family: 'Montserrat', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   background-color: var(--bg-grey);
-  color: #333;
+  color: var(--text-grey);
 }
 
 h1, h2, h3 {

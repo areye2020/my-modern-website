@@ -1,58 +1,185 @@
 /* src/pages/Resume/Resume.module.css */
 
 .resumeContainer {
-  padding-top: 100px; /* Slightly more top padding for titles */
-  max-width: 1000px;
+  padding-top: 100px;
+  max-width: 1300px; /* Widened to accommodate two columns */
   margin: 0 auto;
-  padding-bottom: 50px;
+  padding-bottom: 100px;
+  padding-left: 20px;
+  padding-right: 20px;
 }
 
-.pageTitle {
+/* --- Typography Matching the Original Design --- */
+.headerSection {
   text-align: center;
+  margin-bottom: 80px;
+}
+
+.subheading {
+  color: var(--primary-pink);
+  font-size: 0.9rem;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  font-weight: 500;
+  display: block; /* Forces it to its own line above the main heading */
+}
+
+.mainHeading {
+  font-size: 3.5rem;
+  font-weight: 700;
+  color: #2b2b2b;
+  margin-top: 10px;
+}
+
+/* --- Grid Layout --- */
+.twoColumnGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 60px; /* Space between Education and Experience columns */
+}
+
+.columnHeader {
+  margin-bottom: 40px;
+}
+
+.columnDates {
+  color: var(--primary-pink);
+  font-size: 0.9rem;
+  letter-spacing: 1px;
+  display: block;
+  margin-bottom: 5px;
+}
+
+.columnTitle {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: #2b2b2b;
+  margin: 0;
+}
+
+/* --- The Timeline Engineering --- */
+.timeline {
+  position: relative;
+  padding-left: 45px; /* Creates the gap for the horizontal line */
+  border-left: 4px solid #d9d9d9; /* The main vertical grey line */
+}
+
+/* Wrapper for the card that controls the hover states of the timeline */
+.timelineItem {
+  position: relative;
   margin-bottom: 50px;
 }
 
-.resumeSection {
-  margin-bottom: 50px;
+/* The horizontal line connecting the vertical line to the card */
+.timelineItem::before {
+  content: '';
+  position: absolute;
+  top: 40px; /* Aligns horizontally with the card title */
+  left: -45px; /* Pulls it back to touch the vertical line */
+  width: 35px;
+  height: 4px;
+  background-color: #d9d9d9;
+  z-index: 1;
+  transition: background-color var(--transition-speed) ease;
 }
 
-.resumeGrid {
-  display: flex;
-  flex-direction: column; /* Stack resume items vertically */
-  gap: 20px;
-  margin-top: 20px;
+/* The hollow circle dot resting on the vertical line */
+.timelineItem::after {
+  content: '';
+  position: absolute;
+  top: 32px; /* Centers the dot precisely on the horizontal line */
+  left: -54px; /* Centers the dot precisely over the vertical line */
+  width: 12px;
+  height: 12px;
+  border: 4px solid #d9d9d9;
+  border-radius: 50%;
+  background-color: var(--bg-grey); /* Keeps the center matching the page background */
+  z-index: 2;
+  transition: border-color var(--transition-speed) ease;
 }
 
-/* Page specific styles applied *through* the reusable Card wrapper */
+/* HOVER EFFECT DATA FLOW:
+  When the user hovers over the .timelineItem container, it targets the ::before (line) 
+  and ::after (dot) pseudo-elements and changes their color to the vibrant pink variable.
+*/
+.timelineItem:hover::before {
+  background-color: var(--primary-pink);
+}
+
+.timelineItem:hover::after {
+  border-color: var(--primary-pink);
+  background-color: var(--primary-pink); /* Fills the circle in completely */
+}
+
+/* --- Card Interior Layout --- */
 .resumeCard {
-  border-left: 5px solid var(--light-grey); /* Optional: distinctive border */
+  padding: 40px; /* Generous padding like the original */
+}
+
+.cardHeader {
+  display: flex;
+  justify-content: space-between; /* Pushes text left, logo right */
+  align-items: flex-start;
+  margin-bottom: 20px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid #eee; /* Subtle separator line */
   transition: border-color var(--transition-speed);
 }
 
-.resumeCard:hover {
-  border-left-color: var(--white); /* Ensure the side-border becomes white on hover */
+/* Change the separator line to blend in when the card turns pink */
+.resumeCard:hover .cardHeader {
+  border-bottom-color: rgba(255, 255, 255, 0.2);
 }
 
 .cardTitle {
-  margin-top: 0;
-  margin-bottom: 5px;
-}
-
-.cardSchool {
-  font-weight: 500;
-  margin-bottom: 5px;
+  font-size: 1.6rem;
+  color: #2b2b2b;
+  margin: 0 0 5px 0;
 }
 
 .cardDate {
-  font-size: 0.9rem;
-  color: #777; /* Standard subtext style from original */
+  font-size: 1rem;
+  color: var(--text-grey);
+  margin: 0;
 }
 
-/* Ensure subtext becomes white when card is hovered */
-.resumeCard:hover .cardDate {
-  color: var(--white);
+.cardDetails p {
+  line-height: 1.8;
+  font-size: 1.05rem;
+  color: var(--text-grey);
+  margin-bottom: 10px;
 }
 
-.cardDetails {
-  margin-top: 15px;
+/* Placeholder CSS box mimicking the white logos with borders 
+  from your original screenshot to prevent Vite build errors.
+*/
+.logoPlaceholder {
+  width: 70px;
+  height: 50px;
+  background-color: #f4f4f4;
+  border: 2px solid #e0e0e0;
+  border-radius: 4px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 0.7rem;
+  color: #aaa;
+  font-weight: bold;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+}
+
+.cardLogo {
+  width: 70px; /* Keep it uniform with the placeholder */
+  height: 50px;
+  object-fit: contain; /* Ensures the logo scales down proportionally without getting squished */
+  border-radius: 4px;
+  background-color: transparent; 
+}
+
+/* --- Responsive Design (Mobile) --- */
+@media (max-width: 968px) {
+  .twoColumnGrid {
+    grid-template-columns: 1fr; /* Collapses to a single column on smaller screens */
+    gap: 40px;
+  }
 }
