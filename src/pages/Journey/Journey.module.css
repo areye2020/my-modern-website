@@ -1,70 +1,139 @@
 /* src/pages/Journey/Journey.module.css */
 
 .journeyContainer {
-  padding-top: 100px;
-  max-width: 900px;
+  padding: 4rem 2rem;
+  max-width: 1200px;
   margin: 0 auto;
-  padding-bottom: 50px;
 }
 
-.pageTitle {
+/* Header Styling (Matches Resume Page) */
+.headerSection {
   text-align: center;
-  margin-bottom: 10px;
+  margin-bottom: 4rem;
 }
-
-.pageSubtitle {
-  text-align: center;
-  color: var(--text-grey);
-  margin-bottom: 50px;
-}
-
-.journeyList {
-  display: flex;
-  flex-direction: column; /* Timeline layout */
-  gap: 30px;
-}
-
-/* Journey-specific style inside the reusable Card wrapper */
-.journeyCard {
-  position: relative;
-  /* Add typical timeline dot element (pure CSS) */
-}
-
-/* Creating a pure CSS timeline dot that aligns to the card */
-.journeyCard::before {
-  content: '';
-  position: absolute;
-  left: -25px; /* Position dot in the margin */
-  top: 25px;
-  width: 12px;
-  height: 12px;
-  border-radius: 50%;
-  background-color: var(--primary-pink);
-  box-shadow: 0 0 5px rgba(255,105,180,0.5);
-}
-
-.cardHeader {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 10px;
-}
-
-.cardTitle {
-  margin: 0;
-  font-size: 1.5rem;
-}
-
-.cardDate {
-  font-weight: bold;
+.subheading {
   color: var(--primary-pink);
+  letter-spacing: 2px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  display: block;
+  margin-bottom: 0.5rem;
+  text-transform: uppercase;
+}
+.mainHeading {
+  font-size: 3rem;
+  color: var(--text-grey);
+  margin: 0;
 }
 
-/* Ensure the date text becomes white when card is hovered */
-.journeyCard:hover .cardDate {
-  color: var(--white);
+/* --- Layout Architecture --- */
+.timelineContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 6rem; /* Spacing between each journey part */
 }
 
+.journeyRow {
+  display: flex;
+  flex-direction: column; /* MOBILE DEFAULT: Stack vertically */
+  gap: 2rem;
+  align-items: center;
+}
+
+/* Desktop override for the alternating side-by-side layout */
+@media (min-width: 768px) {
+  .journeyRow {
+    flex-direction: row; /* Put them side-by-side */
+    justify-content: space-between;
+    align-items: stretch; /* Makes both sides equal height if possible */
+
+    display: grid;
+    grid-template-columns: 1.5fr 1fr;
+    gap: 40px; /* Reduces space between cards */
+  }
+  
+  /* This flips the layout when applied via JSX */
+  .rowReverse {
+    direction: rtl;
+  }
+  .rowReverse * {
+    direction: ltr; /* Resets the text direction inside the grid elements */
+  }
+}
+
+/* --- Half Containers --- */
+.textHalf, .imageHalf {
+  flex: 1; /* Both halves take up equal 50% width on desktop */
+  width: 100%; /* Ensures full width on mobile */
+  display: flex;
+  flex-direction: column;
+  justify-content: center; /* Centers the text vertically next to the images */
+}
+
+/* --- Text Card Styling --- */
+.journeyTextCard {
+  padding: 3rem;
+  height: 100%; /* Stretches to fill the space */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.cardTitle {
+  font-size: 1.8rem;
+  margin-top: 0;
+  margin-bottom: 1rem;
+}
 .cardDescription {
-  line-height: 1.6;
+  line-height: 1.8;
+  font-size: 1rem;
+}
+
+/* --- Image Half Styling --- */
+/* UPDATED IMAGE HALF CONTAINER */
+.imageHalf {
+  width: 100%;
+  
+  /* ADD THESE NEW CARD STYLING RULES HERE: */
+  background-color: var(--white); /* White card background */
+  border-radius: 12px; /* Matching rounded corners from main Card component */
+  box-shadow: 0 4px 6px rgba(0,0,0,0.05); /* Subtle shadow for depth */
+  
+  /* CRITICAL: Centers the images inside the card with padding */
+  padding: 3rem; /* Space before the edge of the card, matching old site padding */
+  box-sizing: border-box; /* Ensures padding is included in the width calculation */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center; /* Horizontally centers images inside the card */
+  gap: 1.5rem; /* Space between the two stacked image wrappers */
+  
+  /* Optional: Smooth fade effect on page load */
+  transition: opacity 0.3s ease-out;
+}
+
+/* Ensure the image wrapper itself centers things */
+.imageWrapper {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* Horizontally centers the image and caption */
+  margin-bottom: 0;
+}
+
+/* ADJUSTED IMAGE SIZING TO FIT INSIDE PADDED CARD */
+.journeyImg, .imgPlaceholder {
+  width: 100%; /* Spans the width allowed by the parent card padding */
+  max-width: 450px; /* FIXED: Prevents image from taking full card width */
+  
+  height: 250px; /* Fixed height for uniformity */
+  object-fit: cover;
+  border-radius: 8px; /* Clean internal corner radius */
+  box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+}
+
+.imgCaption {
+  margin-top: 0.8rem;
+  font-size: 0.9rem;
+  color: var(--text-grey);
+  font-style: italic;
 }

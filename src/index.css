@@ -7,8 +7,8 @@
   */
 :root {
   --primary-pink: #C86D51; /* Deep Terracotta accent replacing #ff014f */
-  --bg-grey: #FBF7F4;      /* Soft cream/sand page background */
-  --light-grey: #EAE3DE;   /* Muted sand line color for timelines/inputs */
+  --bg-grey: #F6EFE9;      /* Soft cream/sand page background */
+  --light-grey: #E6DDD6;   /* Muted sand line color for timelines/inputs */
   --text-grey: #4A4543;    /* Professional muted brown-gray text */
   --white: #FFFFFF;        /* Pure white cards that stand out cleanly on sand */
   --transition-speed: 0.3s;
