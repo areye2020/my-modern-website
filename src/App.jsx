@@ -2,7 +2,7 @@
 import { Routes, Route } from 'react-router-dom';
 import Header from './components/Header/Header'; // We'll create this next
 import ScrollToTop from './components/ScrollToTop';
-// Temporary imports for the page components we will create
+import Footer from './components/Footer/Footer';
 import Home from './pages/Home/Home';
 import Resume from './pages/Resume/Resume';
 import Journey from './pages/Journey/Journey';
@@ -34,6 +34,7 @@ function App() {
       </main>
 
       {/* You could add a shared Footer component here later */}
+      <Footer />
     </>
   )
 }
