@@ -35,7 +35,7 @@ const Footer = () => {
           <p>Ready to start a project? Reach out!</p>
           <div className={styles.socialIcons}>
             <a href="https://github.com/areye2020" target="_blank" rel="noreferrer"><FiGithub /></a>
-            <a href="https://linkedin.com/in/yourprofile" target="_blank" rel="noreferrer"><FiLinkedin /></a>
+            <a href="https://linkedin.com/in/adriana-monica-reyes" target="_blank" rel="noreferrer"><FiLinkedin /></a>
             <a href="mailto:your.email@example.com"><FiMail /></a>
           </div>
         </div>
