@@ -147,80 +147,142 @@ const Home = () => {
   const filteredSkills = skillsData.filter((skill) => skill.category === activeTab);
 
   // Interactive Canvas Nodes Effect
-  useEffect(() => {
-    const canvas = canvasRef.current;
-    if (!canvas) return;
-    const ctx = canvas.getContext('2d');
-    if (!ctx) return;
+// src/pages/Home/Home.jsx
 
-    let animationFrameId;
+useEffect(() => {
+  const canvas = canvasRef.current;
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+  if (!ctx) return;
 
-    const handleResize = () => {
-      if (canvas) {
-        canvas.width = canvas.parentElement ? canvas.parentElement.offsetWidth : window.innerWidth;
-        canvas.height = canvas.parentElement ? canvas.parentElement.offsetHeight : window.innerHeight;
-      }
-    };
+  let animationFrameId;
 
-    handleResize();
-    window.addEventListener('resize', handleResize);
+  // Track mouse coordinates and active hover state
+  const mouse = {
+    x: null,
+    y: null,
+    radius: 150, // Interaction radius around the cursor
+  };
 
-    const particleCount = 40;
-    const particles = [];
-
-    for (let i = 0; i < particleCount; i++) {
-      particles.push({
-        x: Math.random() * canvas.width,
-        y: Math.random() * canvas.height,
-        vx: (Math.random() - 0.5) * 0.8,
-        vy: (Math.random() - 0.5) * 0.8,
-        radius: Math.random() * 2 + 1,
-      });
+  const handleResize = () => {
+    if (canvas) {
+      canvas.width = canvas.parentElement ? canvas.parentElement.offsetWidth : window.innerWidth;
+      canvas.height = canvas.parentElement ? canvas.parentElement.offsetHeight : window.innerHeight;
     }
+  };
 
-    const draw = () => {
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
+  const handleMouseMove = (event) => {
+    const rect = canvas.getBoundingClientRect();
+    mouse.x = event.clientX - rect.left;
+    mouse.y = event.clientY - rect.top;
+  };
 
-      for (let i = 0; i < particles.length; i++) {
-        let p = particles[i];
-        p.x += p.vx;
-        p.y += p.vy;
+  const handleMouseLeave = () => {
+    mouse.x = null;
+    mouse.y = null;
+  };
 
-        if (p.x < 0 || p.x > canvas.width) p.vx *= -1;
-        if (p.y < 0 || p.y > canvas.height) p.vy *= -1;
+  handleResize();
+  window.addEventListener('resize', handleResize);
+  
+  // Attach interactive mouse listeners to the parent section/canvas
+  canvas.parentElement?.addEventListener('mousemove', handleMouseMove);
+  canvas.parentElement?.addEventListener('mouseleave', handleMouseLeave);
 
-        ctx.beginPath();
-        ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
-        ctx.fillStyle = 'rgba(224, 122, 95, 0.4)';
-        ctx.fill();
+  const particleCount = 45;
+  const particles = [];
 
-        for (let j = i + 1; j < particles.length; j++) {
-          let p2 = particles[j];
-          let dx = p.x - p2.x;
-          let dy = p.y - p2.y;
-          let dist = Math.sqrt(dx * dx + dy * dy);
+  for (let i = 0; i < particleCount; i++) {
+    particles.push({
+      x: Math.random() * canvas.width,
+      y: Math.random() * canvas.height,
+      baseX: Math.random() * canvas.width,
+      baseY: Math.random() * canvas.height,
+      vx: (Math.random() - 0.5) * 0.8,
+      vy: (Math.random() - 0.5) * 0.8,
+      radius: Math.random() * 2 + 1,
+    });
+  }
 
-          if (dist < 120) {
-            ctx.beginPath();
-            ctx.moveTo(p.x, p.y);
-            ctx.lineTo(p2.x, p2.y);
-            ctx.strokeStyle = `rgba(224, 122, 95, ${0.15 * (1 - dist / 120)})`;
-            ctx.lineWidth = 0.8;
-            ctx.stroke();
-          }
+  const draw = () => {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    for (let i = 0; i < particles.length; i++) {
+      let p = particles[i];
+
+      // Regular velocity movement
+      p.x += p.vx;
+      p.y += p.vy;
+
+      // Bounce off walls
+      if (p.x < 0 || p.x > canvas.width) p.vx *= -1;
+      if (p.y < 0 || p.y > canvas.height) p.vy *= -1;
+
+      // Mouse Interaction: Repulsion logic
+      if (mouse.x !== null && mouse.y !== null) {
+        let dx = mouse.x - p.x;
+        let dy = mouse.y - p.y;
+        let distance = Math.sqrt(dx * dx + dy * dy);
+
+        if (distance < mouse.radius) {
+          const forceDirectionX = dx / distance;
+          const forceDirectionY = dy / distance;
+          const maxDistance = mouse.radius;
+          const force = (maxDistance - distance) / maxDistance;
+          const directionX = forceDirectionX * force * 3;
+          const directionY = forceDirectionY * force * 3;
+
+          p.x -= directionX;
+          p.y -= directionY;
+        }
+
+        // Draw line connecting cursor to nearby nodes
+        if (distance < mouse.radius) {
+          ctx.beginPath();
+          ctx.moveTo(p.x, p.y);
+          ctx.lineTo(mouse.x, mouse.y);
+          ctx.strokeStyle = `rgba(224, 122, 95, ${0.4 * (1 - distance / mouse.radius)})`;
+          ctx.lineWidth = 1;
+          ctx.stroke();
         }
       }
 
-      animationFrameId = requestAnimationFrame(draw);
-    };
+      // Draw particle dot
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+      ctx.fillStyle = 'rgba(224, 122, 95, 0.6)';
+      ctx.fill();
 
-    draw();
+      // Draw lines between adjacent nodes
+      for (let j = i + 1; j < particles.length; j++) {
+        let p2 = particles[j];
+        let dx = p.x - p2.x;
+        let dy = p.y - p2.y;
+        let dist = Math.sqrt(dx * dx + dy * dy);
 
-    return () => {
-      window.removeEventListener('resize', handleResize);
-      cancelAnimationFrame(animationFrameId);
-    };
-  }, []);
+        if (dist < 120) {
+          ctx.beginPath();
+          ctx.moveTo(p.x, p.y);
+          ctx.lineTo(p2.x, p2.y);
+          ctx.strokeStyle = `rgba(224, 122, 95, ${0.15 * (1 - dist / 120)})`;
+          ctx.lineWidth = 0.8;
+          ctx.stroke();
+        }
+      }
+    }
+
+    animationFrameId = requestAnimationFrame(draw);
+  };
+
+  draw();
+
+  return () => {
+    window.removeEventListener('resize', handleResize);
+    canvas.parentElement?.removeEventListener('mousemove', handleMouseMove);
+    canvas.parentElement?.removeEventListener('mouseleave', handleMouseLeave);
+    cancelAnimationFrame(animationFrameId);
+  };
+}, []);
 
   return (
     <div className={styles.homeWrapper}>
