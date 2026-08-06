@@ -11,7 +11,7 @@ ReactDOM.createRoot(document.getElementById('root')).render(
       BrowserRouter is required to enable routing in a React app.
       It wraps the main App component.
     */}
-    <BrowserRouter>
+    <BrowserRouter basename="/my-modern-website">
       <App />
     </BrowserRouter>
   </React.StrictMode>,
