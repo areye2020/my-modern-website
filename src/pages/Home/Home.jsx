@@ -1,7 +1,12 @@
 // src/pages/Home/Home.jsx
-import React, { useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { TypeAnimation } from 'react-type-animation';
-import { FiMessageSquare, FiZap, FiCode, FiCpu } from 'react-icons/fi';
+import { 
+  FiMessageSquare, FiZap, FiCode, FiCpu, FiTerminal, 
+  FiLayers, FiServer, FiDatabase, FiSettings, FiGlobe, 
+  FiCheckSquare, FiLayout, FiBox, FiSmartphone
+} from 'react-icons/fi';
+import { FaPython, FaJs, FaReact, FaNodeJs, FaDocker, FaGitAlt, FaFigma, FaCss3Alt, FaHtml5 } from 'react-icons/fa';
 
 import styles from './Home.module.css';
 import Card from '../../components/Card/Card';
@@ -58,30 +63,70 @@ const workPhilosophy = [
     title: 'Performance & Scalability',
     icon: <FiCpu className={styles.skillIcon} />,
     description:
-      'I engineer responsive UI/UX and optimized backend pipelines designed to scale efficiently under heavy user loads.',
+      'From database query optimization to responsive UI rendering, I design web systems built to handle scale smoothly.',
   },
+];
+
+// Phase 3: Skills & Tech Segmented Control Data
+const skillTabs = [
+  { id: 'programming', label: 'Programming Languages' },
+  { id: 'frontend', label: 'Frontend Development' },
+  { id: 'backend', label: 'Backend Development' },
+  { id: 'tools', label: 'Tools & Practices' },
+];
+
+const skillsData = [
+  // Programming Languages
+  { id: 'js', name: 'JavaScript', category: 'programming', icon: <FaJs /> },
+  { id: 'py', name: 'Python', category: 'programming', icon: <FaPython /> },
+  { id: 'cpp', name: 'C++', category: 'programming', icon: <FiTerminal /> },
+  
+  // Frontend
+  { id: 'react', name: 'React', category: 'frontend', icon: <FaReact /> },
+  { id: 'html', name: 'HTML5', category: 'frontend', icon: <FaHtml5 /> },
+  { id: 'css', name: 'CSS3', category: 'frontend', icon: <FaCss3Alt /> },
+  
+  // Backend
+  { id: 'node', name: 'Node.js', category: 'backend', icon: <FaNodeJs /> },
+  { id: 'express', name: 'Express.js', category: 'backend', icon: <FiServer /> },
+  { id: 'sql', name: 'PostgreSQL', category: 'backend', icon: <FiDatabase /> },
+  
+  // Tools
+  { id: 'git', name: 'Git & GitHub', category: 'tools', icon: <FaGitAlt /> },
+  { id: 'docker', name: 'Docker', category: 'tools', icon: <FaDocker /> },
+  { id: 'figma', name: 'Figma', category: 'tools', icon: <FaFigma /> },
 ];
 
 const Home = () => {
   const canvasRef = useRef(null);
+  const [activeTab, setActiveTab] = useState('programming');
 
   // Lightweight Interactive Particle Network (Nodes & Sticks)
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
-
     const ctx = canvas.getContext('2d');
     let animationFrameId;
 
-    const resizeCanvas = () => {
-      canvas.width = canvas.parentElement.clientWidth;
-      canvas.height = canvas.parentElement.clientHeight;
-    };
-    resizeCanvas();
-    window.addEventListener('resize', resizeCanvas);
+    let width = (canvas.width = canvas.parentElement.offsetWidth);
+    let height = (canvas.height = canvas.parentElement.offsetHeight);
 
-    // Mouse coordinates tracking
-    const mouse = { x: null, y: null, radius: 120 };
+    const handleResize = () => {
+      if (!canvas || !canvas.parentElement) return;
+      width = canvas.width = canvas.parentElement.offsetWidth;
+      height = canvas.height = canvas.parentElement.offsetHeight;
+    };
+    window.addEventListener('resize', handleResize);
+
+    const particles = Array.from({ length: 45 }, () => ({
+      x: Math.random() * width,
+      y: Math.random() * height,
+      vx: (Math.random() - 0.5) * 1.2,
+      vy: (Math.random() - 0.5) * 1.2,
+      radius: Math.random() * 2 + 1.5,
+    }));
+
+    const mouse = { x: null, y: null, radius: 140 };
 
     const handleMouseMove = (e) => {
       const rect = canvas.getBoundingClientRect();
@@ -94,54 +139,40 @@ const Home = () => {
       mouse.y = null;
     };
 
-    const parent = canvas.parentElement;
-    parent.addEventListener('mousemove', handleMouseMove);
-    parent.addEventListener('mouseleave', handleMouseLeave);
+    canvas.parentElement.addEventListener('mousemove', handleMouseMove);
+    canvas.parentElement.addEventListener('mouseleave', handleMouseLeave);
 
-    // Initialize particles
-    const particleCount = Math.floor((canvas.width * canvas.height) / 12000);
-    const particles = Array.from({ length: particleCount }, () => ({
-      x: Math.random() * canvas.width,
-      y: Math.random() * canvas.height,
-      vx: (Math.random() - 0.5) * 0.8,
-      vy: (Math.random() - 0.5) * 0.8,
-      radius: Math.random() * 2 + 1.5,
-    }));
+    const render = () => {
+      ctx.clearRect(0, 0, width, height);
 
-    const animate = () => {
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-      // Draw and update particles
-      particles.forEach((p, index) => {
+      particles.forEach((p, i) => {
         p.x += p.vx;
         p.y += p.vy;
 
-        if (p.x < 0 || p.x > canvas.width) p.vx *= -1;
-        if (p.y < 0 || p.y > canvas.height) p.vy *= -1;
+        if (p.x < 0 || p.x > width) p.vx *= -1;
+        if (p.y < 0 || p.y > height) p.vy *= -1;
 
         ctx.beginPath();
         ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
-        ctx.fillStyle = 'rgba(224, 122, 95, 0.45)';
+        ctx.fillStyle = 'rgba(224, 122, 95, 0.5)';
         ctx.fill();
 
-        // Connect particles close to each other
-        for (let j = index + 1; j < particles.length; j++) {
+        for (let j = i + 1; j < particles.length; j++) {
           const p2 = particles[j];
           const dx = p.x - p2.x;
           const dy = p.y - p2.y;
           const dist = Math.sqrt(dx * dx + dy * dy);
 
-          if (dist < 100) {
+          if (dist < 110) {
             ctx.beginPath();
             ctx.moveTo(p.x, p.y);
             ctx.lineTo(p2.x, p2.y);
-            ctx.strokeStyle = `rgba(224, 122, 95, ${0.25 * (1 - dist / 100)})`;
-            ctx.lineWidth = 0.8;
+            ctx.strokeStyle = `rgba(224, 122, 95, ${0.25 * (1 - dist / 110)})`;
+            ctx.lineWidth = 1;
             ctx.stroke();
           }
         }
 
-        // Connect particles near the mouse cursor
         if (mouse.x !== null && mouse.y !== null) {
           const mDx = p.x - mouse.x;
           const mDy = p.y - mouse.y;
@@ -152,32 +183,37 @@ const Home = () => {
             ctx.moveTo(p.x, p.y);
             ctx.lineTo(mouse.x, mouse.y);
             ctx.strokeStyle = `rgba(224, 122, 95, ${0.4 * (1 - mDist / mouse.radius)})`;
-            ctx.lineWidth = 1;
+            ctx.lineWidth = 1.2;
             ctx.stroke();
           }
         }
       });
 
-      animationFrameId = requestAnimationFrame(animate);
+      animationFrameId = requestAnimationFrame(render);
     };
 
-    animate();
+    render();
 
     return () => {
-      window.removeEventListener('resize', resizeCanvas);
-      parent.removeEventListener('mousemove', handleMouseMove);
-      parent.removeEventListener('mouseleave', handleMouseLeave);
+      window.removeEventListener('resize', handleResize);
+      if (canvas.parentElement) {
+        canvas.parentElement.removeEventListener('mousemove', handleMouseMove);
+        canvas.parentElement.removeEventListener('mouseleave', handleMouseLeave);
+      }
       cancelAnimationFrame(animationFrameId);
     };
   }, []);
 
+  const filteredSkills = skillsData.filter((skill) => skill.category === activeTab);
+
   return (
     <div className={styles.homeWrapper}>
-      {/* Hero Section */}
+      {/* =========================================
+          1. HERO SECTION
+          ========================================= */}
       <section className={styles.heroSection}>
         <canvas ref={canvasRef} className={styles.particlesCanvas} />
 
-        {/* Left Column: Greeting & Typing Animation */}
         <div className={styles.heroLeft}>
           <h1 className={styles.greeting}>Hi there, I'm Adriana Reyes</h1>
 
@@ -185,72 +221,52 @@ const Home = () => {
             <span className={styles.staticPrefix}>I am into </span>
             <TypeAnimation
               sequence={[
-                'Artificial Intelligence',
-                2000,
-                'Full Stack Development',
-                2000,
-                'Cybersecurity',
-                2000,
-                'iOS App Development',
-                2000,
-                'Scalable Web Development',
-                2000,
-                'Graphic Design',
-                2000,
+                'Artificial Intelligence', 2000,
+                'Full Stack Development', 2000,
+                'Cybersecurity', 2000,
+                'iOS App Development', 2000,
+                'Scalable Web Development', 2000,
+                'Graphic Design', 2000,
               ]}
               wrapper="span"
               speed={50}
-              className={styles.dynamicText}
               repeat={Infinity}
+              className={styles.dynamicText}
             />
           </div>
 
-          {/* Connect Links Grid */}
           <div className={styles.connectContainer}>
             {connectLinks.map((link) => (
-              <Card key={link.name} className={styles.connectCard}>
-                <a
-                  href={link.url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className={styles.connectLink}
-                  title={link.name}
-                >
-                  <img
-                    src={link.logo}
-                    alt={`${link.name} Logo`}
-                    className={styles.connectIcon}
-                  />
-                </a>
-              </Card>
+              <a
+                key={link.name}
+                href={link.url}
+                target="_blank"
+                rel="noreferrer"
+                className={styles.connectCard}
+                title={link.name}
+              >
+                <img src={link.logo} alt={link.name} className={styles.connectLogo} />
+              </a>
             ))}
           </div>
 
-          {/* Smooth Scroll Button */}
-          <a href="#about" className={styles.scrollBtn}>
-            <span>About Me</span>
-            <span className={styles.arrow}>↓</span>
+          <a href="#about" className={styles.aboutButton}>
+            About Me ↓
           </a>
         </div>
 
-        {/* Right Column: Profile Picture with Offset Terracotta Border */}
         <div className={styles.heroRight}>
-          <div className={styles.heroImageContainer}>
-            <img
-              src={profilePic}
-              alt="Adriana Reyes in NYC"
-              className={styles.profilePicture}
-            />
+          <div className={styles.imageFrame}>
+            <img src={profilePic} alt="Adriana Reyes" className={styles.profileImg} />
           </div>
         </div>
       </section>
 
-      {/* ===================================================================
-         PHASE 2: ABOUT ME & HOW I WORK SECTION
-         =================================================================== */}
+      {/* =========================================
+          2. ABOUT ME & HOW I WORK
+          ========================================= */}
       <section id="about" className={styles.aboutSection}>
         <div className={styles.aboutInner}>
-          {/* Left Column: Bio Paragraph */}
           <div className={styles.bioColumn}>
             <h2 className={styles.sectionTitle}>About Me</h2>
             <div className={styles.titleUnderline} />
@@ -262,7 +278,6 @@ const Home = () => {
             </p>
           </div>
 
-          {/* Right Column: 2x2 Soft Skill Cards ("How I Work") */}
           <div className={styles.workColumn}>
             <h2 className={styles.sectionTitle}>How I Work</h2>
             <div className={styles.titleUnderline} />
@@ -271,12 +286,43 @@ const Home = () => {
                 <Card key={skill.id} className={styles.skillCard}>
                   <div className={styles.iconWrapper}>{skill.icon}</div>
                   <h3 className={styles.skillTitle}>{skill.title}</h3>
-                  <p className={styles.skillDescription}>
-                    {skill.description}
-                  </p>
+                  <p className={styles.skillDescription}>{skill.description}</p>
                 </Card>
               ))}
             </div>
+          </div>
+        </div>
+      </section>
+
+      {/* =========================================
+          3. SKILLS & TECHNOLOGIES
+          ========================================= */}
+      <section className={styles.skillsSection}>
+        <div className={styles.skillsContainer}>
+          <h2 className={styles.sectionTitle}>Skills & Technologies</h2>
+          <div className={styles.titleUnderline} />
+
+          {/* Segmented Control Tabs */}
+          <div className={styles.segmentedControl}>
+            {skillTabs.map((tab) => (
+              <button
+                key={tab.id}
+                className={`${styles.tabButton} ${activeTab === tab.id ? styles.activeTab : ''}`}
+                onClick={() => setActiveTab(tab.id)}
+              >
+                {tab.label}
+              </button>
+            ))}
+          </div>
+
+          {/* Animated Skills Grid */}
+          <div className={styles.skillsGrid} key={activeTab}>
+            {filteredSkills.map((skill) => (
+              <Card key={skill.id} className={styles.skillTile}>
+                <div className={styles.skillTileIcon}>{skill.icon}</div>
+                <h4 className={styles.skillTileName}>{skill.name}</h4>
+              </Card>
+            ))}
           </div>
         </div>
       </section>
