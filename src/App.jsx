@@ -5,7 +5,7 @@ import ScrollToTop from './components/ScrollToTop';
 import Footer from './components/Footer/Footer';
 import Home from './pages/Home/Home';
 import Resume from './pages/Resume/Resume';
-import Journey from './pages/Journey/Journey';
+//import Journey from './pages/Journey/Journey';
 import Contact from './pages/Contact/Contact';
 import './App.css' // You can delete the default Vite App.css content
 
@@ -26,7 +26,8 @@ function App() {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/resume" element={<Resume />} />
-          <Route path="/journey" element={<Journey />} />
+          {/* Temporarily hidden until Ready */}
+  {       /* <Route path="/journey" element={<Journey />} /> */}
           <Route path="/contact" element={<Contact />} />
           {/* Optional: Add a 'not found' route */}
           <Route path="*" element={<div>Page Not Found</div>} />

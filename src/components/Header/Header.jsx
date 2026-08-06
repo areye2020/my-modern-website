@@ -53,9 +53,10 @@ const Header = () => {
         <NavLink to="/" className={setLinkClassName}>
           Home
         </NavLink>
-        <NavLink to="/journey" className={setLinkClassName}>
+        {/* Temporarily hidden until Ready */}
+        {/* <NavLink to="/journey" className={setLinkClassName}>
           Journey
-        </NavLink>
+         </NavLink> */}
         <NavLink to="/resume" className={setLinkClassName}>
           Resume
         </NavLink>
